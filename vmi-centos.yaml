@@ -1,0 +1,28 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: myvmi 
+  labels:
+      kubevirt.io/size: small
+      kubevirt.io/domain: myvmi
+spec:
+  terminationGracePeriodSeconds: 5
+  domain:
+    resources:
+      requests:
+        memory: 1536M
+    devices:
+      disks:
+      - name: containerdisk
+        disk:
+          bus: virtio
+      - name: cloudinitdisk
+        disk:
+          bus: virtio
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: mjschmidt/centos:7-x86_64-genericcloud-1907
+    - name: cloudinitdisk
+      cloudInitNoCloud: 
+        userDataBase64: where base 64 stuff goes
