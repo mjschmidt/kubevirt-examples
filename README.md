@@ -20,7 +20,9 @@ cat startup-script | base64 -w0
 virtctl expose vmi myvmi  --port=22 --name=ssh --type=NodePort
 ```
 
-### Additional cloud-init in progress
+### Generic CentOS7 cloud image bug!
+This must be added to all centos7 generic cloud images for now, it is already in startup script
+https://bugs.centos.org/view.php?id=16282
 ```
 /etc/sysconfig/64bit_strstr_via_64bit_strstr_sse2_unaligned
 ```
