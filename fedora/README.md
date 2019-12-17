@@ -74,13 +74,13 @@ kubectl create -f pvc-fedora.yml
 ```
 watch -d kubectl get all
 ```
-<img src="images/watchk_1_status.JPG" width="600" height="300" align="center" />
+<img src="images/watchk_1_status.JPG" width="600" height="150" align="center" />
 
 > Check to make sure PVC claim is bound
 ```
 kubectl get pvc
 ```
-<img src="images/pvc_status_image.JPG" width="600" height="300" align="center" />
+<img src="images/pvc_status.JPG" width="600" height="50" align="center" />
 
 ### Create VM and insert public key into yaml
 ```
@@ -109,4 +109,4 @@ virtctl expose vmi vm1 --name=vm1-ssh --port=22 --type=NodePort
 kubectl get all
 fedora@<host machine ip> -p <service nodeport>
 ```
-<img src="images/success.JPG" width="600" height="300" align="center" />
+<img src="images/success.JPG" width="600" height="150" align="center" />
