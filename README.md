@@ -1,28 +1,108 @@
-# centos-kubevirt
+# Building the KubeVirt and CDI Environment
 
-## Getting the .qcow2 files
-images for centos are found here https://cloud.centos.org/centos/7/images/
+## Steps for adding KubeVirt environment:
 
-I use this one specifically https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1907.qcow2
-
-## Actually doing a thing
-
-### Install Kubevirt to your Cloud
-https://kubevirt.io/user-guide/docs/latest/administration/intro.html
-
-### Cloud-Init
-you must copy and past the output of cloud-init (startup) into yaml
+### Install Virtctl
 ```
-cat startup-script | base64 -w0
-```
-###Esposing a vm using virtctl
-```
-virtctl expose vmi myvmi  --port=22 --name=ssh --type=NodePort
+chmod +x /versions/v0.24.0/virtctl
+sudo mv /versions/v0.24.0/virtctl /usr/bin
 ```
 
-### Generic CentOS7 cloud image bug!
-This must be added to all centos7 generic cloud images for now, it is already in startup script
-https://bugs.centos.org/view.php?id=16282
+### Create KubeVirt Namespace
 ```
-/etc/sysconfig/64bit_strstr_via_64bit_strstr_sse2_unaligned
+kubectl create ns kubevirt
 ```
+
+### Turn on emulation mode
+```
+kubectl create configmap -n kubevirt kubevirt-config --from-literal debug.useEmulation=true
+```
+
+### Create and deploy KubeVirt operator to cluster
+```
+kubectl create -f /versions/v0.24.0/kubevirt-operator.yaml
+kubectl create -f /versions/v0.24.0/kubevirt-cr.yaml
+```
+
+### Check status of operator creation
+```
+watch -d kubectl get all -n kubevirt
+```
+<img src="images/KV_status_image.JPG" width="600" height="300" align="center" />
+
+
+## Steps for adding CDI environment:
+
+### Create Minikube storage environment
+```
+kubectl create -f /versions/v0.24.0/storage-setup.yml
+```
+
+### Create and deploy CDI operator to cluster
+```
+kubectl create -f /versions/v1.11.0/cdi-operator.yaml
+kubectl create -f /versions/v1.11.0/cdi-cr.yaml
+```
+<img src="images/CDI_status_image.JPG" width="600" height="300" align="center" />
+
+### Create image with PVC to test VM creation
+```
+kubectl create -f /tests/centos-pvc.yaml
+```
+
+### Wait for CDI image import to complete
+> (K8s pod importer-centos-xxxxx will run then complete)
+```
+watch -d kubectl get all
+```
+<img src="images/watchk_1_status.JPG" width="600" height="150" align="center" />
+
+> Check to make sure PVC claim is bound
+```
+kubectl get pvc
+```
+<img src="images/pvc_status.JPG" width="600" height="50" align="center" />
+
+## Modify UserDataScript.sh appropriately with public key
+```
+#cloud-config
+
+package_upgrade: false
+
+packages:
+  - git
+
+users:
+  - name: centos
+    gecos: centos
+    password: password
+    lock-passwd: false
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - # Add PubKey Here
+  - name: user
+    gecos: user
+    lock-passwd: false
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - # Add PubKey Here
+```
+## Apply centos1-vm.yaml
+```
+kubectl apply -f /tests/centos1-vm.yaml
+# wait to complete VM creation process
+watch -d kubectl get all
+```
+
+## Create nodeport service for SSH access
+```
+virtctl expose vmi centos1 --name=centos1-ssh --port=22 --type=NodePort
+```
+
+## Access VM via SSH
+```
+# grab service port
+kubectl get all
+user@<host machine ip> -p <nodeport service port>
+```
+
