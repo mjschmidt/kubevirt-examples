@@ -1,40 +1,30 @@
-apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachine
-metadata:
-  creationTimestamp: 2018-07-04T15:03:08Z
-  generation: 1
-  labels:
-    kubevirt.io/os: linux
-  name: centos1
-spec:
-  running: true
-  template:
-    metadata:
-      creationTimestamp: null
-      labels:
-        kubevirt.io/domain: centos1
-    spec:
-      domain:
-        cpu:
-          cores: 2
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: disk0
-          - cdrom:
-              bus: sata
-              readonly: true
-            name: cloudinitdisk
-        machine:
-          type: q35
-        resources:
-          requests:
-            mamory: 2056M
-      volumes:
-      - name: disk0
-        persistentVolumeClaim:
-          claimName: centos
-      - name: cloudinitdisk
-        cloudInitNoCloud:
-          userDataBase64:
+#cloud-config
+
+package_upgrade: false
+
+packages:
+  - git
+
+#if something goes wrong this is the issue
+write_files:
+-   content: |
+        # My new /etc/sysconfig/samba file
+        #
+        #         SMBDOPTIONS="-D"
+    owner: root:root
+    path: /etc/sysconfig/64bit_strstr_via_64bit_strstr_sse2_unaligned
+
+users:
+  - name: centos
+    gecos: centos
+    password: password
+    lock-passwd: false
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ssh-rsa # Add Public Key Here
+  - name: nadorr
+    gecos: nadorr
+    lock-passwd: false
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ssh-rsa # Add Public Key Here
