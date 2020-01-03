@@ -29,10 +29,12 @@ kubectl create configmap -n kubevirt kubevirt-config --from-literal debug.useEmu
 mkdir ~/kv && cd $_
 
 wget https://github.com/kubevirt/kubevirt/releases/download/${KV_VERSION}/kubevirt-operator.yaml
-kubectl create -f kubevirt-operator.yaml
+mv kubevirt-operator.yaml operator-kubevirt.yaml
+kubectl create -f operator-kubevirt.yaml
 
 wget https://github.com/kubevirt/kubevirt/releases/download/${KV_VERSION}/kubevirt-cr.yaml
-kubectl create -f kubevirt-cr.yaml
+mv kubevirt-cr.yaml cr-kubevirt.yaml
+kubectl create -f cr-kubevirt.yaml
 ```
 
 ### Check status of operator creation
@@ -55,11 +57,13 @@ kubectl create -f storage-setup.yml
 ```
 export VER="v1.11.0"
 
-wget https://github.com/kubevirt/containerized-data-importer/releases/download/v1.11.0/cdi-operator.yaml
-kubectl create -f cdi-operator.yaml
+wget https://github.com/kubevirt/containerized-data-importer/releases/download/v1.11.0/operator-cdi.yaml
+mv operator-cdi.yaml operator-cdi.yaml
+kubectl create -f operator-cdi.yaml
 
-wget https://github.com/kubevirt/containerized-data-importer/releases/download/v1.11.0/cdi-cr.yaml
-kubectl create -f cdi-cr.yaml
+wget https://github.com/kubevirt/containerized-data-importer/releases/download/v1.11.0/cr-cdi.yaml
+mv cr-cdi.yaml cr-cdi.yaml
+kubectl create -f cr-cdi.yaml
 ```
 <img src="images/CDI_status_image.JPG" width="600" height="300" align="center" />
 
