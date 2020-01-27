@@ -4,7 +4,7 @@
 
 ### Create variable for KubeVirt version to deploy
 ```
-export KV_VERSION="v0.24.0"
+export KV_VERSION="v0.25.0"
 ```
 
 ### Install Virtctl
@@ -29,12 +29,10 @@ kubectl create configmap -n kubevirt kubevirt-config --from-literal debug.useEmu
 mkdir ~/kv && cd $_
 
 wget https://github.com/kubevirt/kubevirt/releases/download/${KV_VERSION}/kubevirt-operator.yaml
-mv kubevirt-operator.yaml operator-kubevirt.yaml
-kubectl create -f operator-kubevirt.yaml
+kubectl create -f kubevirt-operator.yaml
 
 wget https://github.com/kubevirt/kubevirt/releases/download/${KV_VERSION}/kubevirt-cr.yaml
-mv kubevirt-cr.yaml cr-kubevirt.yaml
-kubectl create -f cr-kubevirt.yaml
+kubectl create -f kubevirt-cr.yaml
 ```
 
 ### Check status of operator creation
@@ -55,22 +53,20 @@ kubectl create -f storage-setup.yml
 
 ### Create and deploy CDI operator to cluster
 ```
-export VER="v1.11.0"
 
-wget https://github.com/kubevirt/containerized-data-importer/releases/download/v1.11.0/operator-cdi.yaml
-mv operator-cdi.yaml operator-cdi.yaml
-kubectl create -f operator-cdi.yaml
+wget https://github.com/kubevirt/containerized-data-importer/releases/download/v1.12.0/cdi-operator.yaml
+kubectl create -f cdi-operator.yaml
 
-wget https://github.com/kubevirt/containerized-data-importer/releases/download/v1.11.0/cr-cdi.yaml
-mv cr-cdi.yaml cr-cdi.yaml
-kubectl create -f cr-cdi.yaml
+wget https://github.com/kubevirt/containerized-data-importer/releases/download/v1.12.0/cdi-cr.yaml
+kubectl create -f cdi-cr.yaml
 ```
 <img src="images/CDI_status_image.JPG" width="600" height="300" align="center" />
 
 ### Create image with PVC to test VM creation
 ```
+mkdir ~/fedora && cd $_
 wget https://raw.githubusercontent.com/kubevirt/kubevirt.github.io/master/labs/manifests/pvc_fedora.yml
-kubectl create -f pvc-fedora.yml
+kubectl create -f pvc_fedora.yml
 ```
 
 ### Wait for CDI image import to complete
@@ -93,7 +89,7 @@ cat << location of public key >>
 ```
 then copy and paste in vm1-pvc.yml under ssh_authorized_keys section and apply to cluster
 ```
-kubectl create -f vm1-pvc.yml
+kubectl create -f vm1_pvc.yml
 ```
 
 ### Watch while VM is being created and/or watch machine spinup
@@ -111,6 +107,6 @@ virtctl expose vmi vm1 --name=vm1-ssh --port=22 --type=NodePort
 ### Grab nodeport created and ssh into box
 ```
 kubectl get all
-fedora@<host machine ip> -p <service nodeport>
+ssh fedora@<host machine ip> -p <service nodeport>
 ```
 <img src="images/success.JPG" width="600" height="150" align="center" />
