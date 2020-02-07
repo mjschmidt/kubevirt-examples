@@ -1,0 +1,46 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  generation: 1
+  labels:
+    kubevirt.io/os: linux
+  name: fedora1
+spec:
+  running: true
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        kubevirt.io/domain: fedora1
+    spec:
+      domain:
+        cpu:
+          cores: 4
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: disk0
+          - cdrom:
+              bus: sata
+              readonly: true
+            name: cloudinitdisk
+        machine:
+          type: q35
+        resources:
+          requests:
+            memory: 4096M
+      volumes:
+      - name: disk0
+        persistentVolumeClaim:
+          claimName: fedora1
+      - cloudInitNoCloud:
+          userData: |
+            #cloud-config
+            hostname: fedora1
+            ssh_pwauth: True
+            disable_root: false
+            ssh_authorized_keys:
+            - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA2HoSA98Qs5beCQnlfNuTXXNryLMuwQWGFaqjwnUXd1Fs8jx7ac3WaF3VXBkx/mcyikpSmFLoX1KtvJMHrvLKF8KHpzIOX59r5/MWFd8EllD1Hkjiv4dEVfe4M3SDDVeHUUCOuQuokcJusoQftWNN0bnsyv0TTzYG7Xh5Ig3ikjR27XBuAfS0o4SICjTJg7/oXK9HnPKx/SXzrKSs0tGn08OR8NwHdzkbp3GgU6YcqSQDyMPCsTQQpy5LcdmWdFKsPtgKLQ19qpBU0Qp7iO4Bqcrn7KlAbtpiW0Fb5WCWivTMFNKIvvBzRMrBbl6lfAhk/zz6PWFx7Ed3RGKmiyCHwQ== rsa-key-20191115
+        name: cloudinitdisk
+
