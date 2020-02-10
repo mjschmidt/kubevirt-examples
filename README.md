@@ -13,15 +13,9 @@
 
 ## Steps for adding KubeVirt environment:
 
-### Create variable for KubeVirt version to deploy
-```
-export KV_VERSION="v0.24.0"
-```
-
 ### Install Virtctl
 ```
-curl -L -o virtctl https://github.com/kubevirt/kubevirt/releases/download/${KV_VERSION}/virtctl-${KV_VERSION}-linux-amd64
-chmod +x virtctl
+chmod +x /resources/virtctl
 sudo mv virtctl /usr/bin
 ```
 
@@ -37,13 +31,9 @@ kubectl create configmap -n kubevirt kubevirt-config --from-literal debug.useEmu
 
 ### Create and deploy KubeVirt operator to cluster
 ```
-mkdir ~/kv && cd $_
+kubectl create -f /resources/kv-0240-operator.yaml
 
-wget https://github.com/kubevirt/kubevirt/releases/download/${KV_VERSION}/kubevirt-operator.yaml
-kubectl create -f kubevirt-operator.yaml
-
-wget https://github.com/kubevirt/kubevirt/releases/download/${KV_VERSION}/kubevirt-cr.yaml
-kubectl create -f kubevirt-cr.yaml
+kubectl create -f /resources/kv-0240-cr.yaml
 ```
 
 ### Check status of operator creation
@@ -57,13 +47,9 @@ watch -d kubectl get all -n kubevirt
 
 ### Create and deploy CDI operator to cluster
 ```
-mkdir ~/cdi && cd $_
+kubectl create -f cdi-0240-operator.yaml
 
-wget https://github.com/kubevirt/containerized-data-importer/releases/download/v1.12.0/cdi-operator.yaml
-kubectl create -f cdi-operator.yaml
-
-wget https://github.com/kubevirt/containerized-data-importer/releases/download/v1.12.0/cdi-cr.yaml
-kubectl create -f cdi-cr.yaml
+kubectl create -f cdi-0240-cr.yaml
 ```
 <img src="images/CDI_status_image.JPG" width="600" height="300" align="center" />
 
