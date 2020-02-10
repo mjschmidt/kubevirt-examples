@@ -1,4 +1,16 @@
-# Building the KubeVirt and CDI Environment
+<img src="images/kv_image1.png" align="left" width="192px" height="192px"/>
+<img align="left" width="0" height="192px" hspace="10"/>
+
+> Utilizing KubeVirt to run a Fedora VM on top of Kubernetes
+
+[![Under Development](https://img.shields.io/badge/under-development-orange.svg)](https://github.com/cez-aug/github-project-boilerplate) [![Public Domain](https://img.shields.io/badge/public-domain-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/) [![Travis](https://img.shields.io/travis/cez-aug/github-project-boilerplate.svg)](http://github.com/cez-aug/github-project-boilerplate)
+
+<br>
+<br>
+
+# KubeVirt
+
+> _KubeVirt technology addresses the needs of development teams that have adopted or want to adopt Kubernetes but possess existing Virtual Machine-based workloads that cannot be easily containerized. More specifically, the technology provides a unified development platform where developers can build, modify, and deploy applications residing in both Application Containers as well as Virtual Machines in a common, shared environment._ 
 
 ## Steps for adding KubeVirt environment:
 
