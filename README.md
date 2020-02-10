@@ -96,6 +96,9 @@ kubectl get pvc
 <img src="images/pvc_status.JPG" width="600" height="50" align="center" />
 
 ### Create VM and add public key
+
+> First modify the /startup-scripts/fedora-startup-script.sh by adding public keys then:
+
 ```
 vim vm_fedora1.yml
 ```
@@ -138,14 +141,9 @@ spec:
       - name: disk0
         persistentVolumeClaim:
           claimName: fedora1
-      - cloudInitNoCloud:
-          userData: |
-            hostname: fedora1
-            ssh_pwauth: True
-            disable_root: false
-            ssh_authorized_keys:
-            - ssh-rsa << Place Public Key Here >>
-        name: cloudinitdisk
+      - name: cloudinitdisk
+        cloudInitNoCloud:
+          userDataBase64: $(cat /startup-scripts/fedora-startup-script.sh | base64 -w0) 
 ```
 
 ### Apply to cluster and watch for creation
