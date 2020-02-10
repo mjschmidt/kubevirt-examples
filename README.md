@@ -181,3 +181,8 @@ kubectl get all
 ssh fedora@<host machine ip> -p <service nodeport>
 ```
 <img src="images/success.JPG" width="600" height="150" align="center" />
+
+## Acknowledgments :thumbsup:
+
+* [KubeVirt.io](https://kubevirt.io/). Great tutorials and code usage instructions
+
