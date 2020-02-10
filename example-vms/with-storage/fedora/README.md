@@ -5,7 +5,7 @@
 
 [![Under Development](https://img.shields.io/badge/innersourced-development-skyblue.svg)](https://github.com/cezaraugusto/github-template-guidelines) [![Public Domain](https://img.shields.io/badge/public-domain-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/) [![Travis](https://img.shields.io/badge/build-none-red.svg)](http://github.com/cezaraugusto/github-template-guidelines)
 
-Fedora is basically CentOS, just a more cloud friendlt, upstream version :alien:
+Fedora is basically CentOS, just a more cloud friendly, upstream version :alien:
 
 <br>
 <p align="center">
