@@ -67,9 +67,7 @@ kubectl create -f cdi-cr.yaml
 ```
 <img src="images/CDI_status_image.JPG" width="600" height="300" align="center" />
 
-## Create Minikube storage environment
-
-### Build image into PVC to test VM creation
+## Build image into PVC to test VM creation
 ```
 mkdir ~/fedora && cd $_
 vim pvc_fedora1.yml
