@@ -1,4 +1,4 @@
-<img src="images/kv_image1.png" align="left" width="192px" height="192px"/>
+<img src="images/kv_image1.png" align="left" width="476px" height="108px"/>
 <img align="left" width="0" height="192px" hspace="10"/>
 
 > Utilizing KubeVirt to run a Fedora VM on top of Kubernetes
@@ -149,14 +149,13 @@ spec:
           type: q35
         resources:
           requests:
-            memory: 2048M
+            memory: 4096M
       volumes:
       - name: disk0
         persistentVolumeClaim:
           claimName: fedora1
       - cloudInitNoCloud:
           userData: |
-            #cloud-config
             hostname: fedora1
             ssh_pwauth: True
             disable_root: false
