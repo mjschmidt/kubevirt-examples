@@ -47,9 +47,9 @@ watch -d kubectl get all -n kubevirt
 
 ### Create and deploy CDI operator to cluster
 ```
-kubectl create -f resources/cdi-0240-operator.yaml
+kubectl create -f resources/cdi-1110-operator.yaml
 
-kubectl create -f resources/cdi-0240-cr.yaml
+kubectl create -f resources/cdi-1110-cr.yaml
 ```
 <img src="images/CDI_status_image.JPG" width="600" height="300" align="center" />
 
