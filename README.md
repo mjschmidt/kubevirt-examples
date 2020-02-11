@@ -15,7 +15,7 @@
 
 ### Install Virtctl
 ```
-chmod +x /resources/virtctl
+chmod +x resources/virtctl
 sudo mv virtctl /usr/bin
 ```
 
@@ -31,9 +31,9 @@ kubectl create configmap -n kubevirt kubevirt-config --from-literal debug.useEmu
 
 ### Create and deploy KubeVirt operator to cluster
 ```
-kubectl create -f /resources/kv-0240-operator.yaml
+kubectl create -f resources/kv-0240-operator.yaml
 
-kubectl create -f /resources/kv-0240-cr.yaml
+kubectl create -f resources/kv-0240-cr.yaml
 ```
 
 ### Check status of operator creation
@@ -47,9 +47,9 @@ watch -d kubectl get all -n kubevirt
 
 ### Create and deploy CDI operator to cluster
 ```
-kubectl create -f /resources/cdi-0240-operator.yaml
+kubectl create -f resources/cdi-0240-operator.yaml
 
-kubectl create -f /resources/cdi-0240-cr.yaml
+kubectl create -f resources/cdi-0240-cr.yaml
 ```
 <img src="images/CDI_status_image.JPG" width="600" height="300" align="center" />
 
