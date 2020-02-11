@@ -143,8 +143,10 @@ spec:
           claimName: fedora1
       - name: cloudinitdisk
         cloudInitNoCloud:
-          userDataBase64: $(cat /startup-scripts/fedora-startup-script.sh | base64 -w0) 
+          userDataBase64: $(cat startup-scripts/fedora-startup-script.sh | base64 -w0) 
 ```
+
+> * If command in __userDataBase64__ field doesn't produce value, run command outside of yaml and copy/paste into it 
 
 ### Apply to cluster and watch for creation
 ```
