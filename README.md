@@ -55,7 +55,7 @@ kubectl create -f resources/cdi-0240-cr.yaml
 
 ## Build image into PVC to test VM creation
 ```
-mkdir ~/fedora && cd $_
+mkdir fedora && cd $_
 vim pvc_fedora1.yml
 ```
 
