@@ -11,7 +11,12 @@
 
 > _KubeVirt technology addresses the needs of development teams that have adopted or want to adopt Kubernetes but possess existing Virtual Machine-based workloads that cannot be easily containerized. More specifically, the technology provides a unified development platform where developers can build, modify, and deploy applications residing in both Application Containers as well as Virtual Machines in a common, shared environment._ 
 
-## Steps for adding KubeVirt environment:
+## Project Dependencies
+* Minikube 1.5.2+
+* Kubectl 1.16.2+
+* Docker 19.03.5+
+
+## Steps for adding KubeVirt environment
 
 ### Install Virtctl
 ```
@@ -43,7 +48,7 @@ watch -d kubectl get all -n kubevirt
 <img src="images/KV_status_image.JPG" width="600" height="300" align="center" />
 
 
-## Steps for adding CDI environment:
+## Steps for adding CDI environment
 
 ### Create and deploy CDI operator to cluster
 ```
@@ -59,7 +64,7 @@ mkdir fedora && cd $_
 vim pvc_fedora1.yml
 ```
 
-### PVC details:
+### PVC details
 ```
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -101,7 +106,7 @@ kubectl get pvc
 vim vm_fedora1.yml
 ```
 
-### VM details:
+### VM details
 ```
 apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachine
