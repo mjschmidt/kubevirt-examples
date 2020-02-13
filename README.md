@@ -102,6 +102,8 @@ kubectl get pvc
 
 ### Create VM and add public key
 
+> Add public key to startup-scripts/fedora-startup-script.sh in project.
+
 ```
 vim vm_fedora1.yml
 ```
