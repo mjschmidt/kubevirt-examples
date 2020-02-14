@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "helm-kv.name" -}}
+{{- define "vm-builder.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "helm-kv.fullname" -}}
+{{- define "vm-builder.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "helm-kv.chart" -}}
+{{- define "vm-builder.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "helm-kv.labels" -}}
-helm.sh/chart: {{ include "helm-kv.chart" . }}
-{{ include "helm-kv.selectorLabels" . }}
+{{- define "vm-builder.labels" -}}
+helm.sh/chart: {{ include "vm-builder.chart" . }}
+{{ include "vm-builder.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,17 +46,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "helm-kv.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "helm-kv.name" . }}
+{{- define "vm-builder.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "vm-builder.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "helm-kv.serviceAccountName" -}}
+{{- define "vm-builder.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "helm-kv.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "vm-builder.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}

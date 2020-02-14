@@ -1,1 +1,1 @@
-## Helm Chart creation in progress
+## Helm chart creation in progress

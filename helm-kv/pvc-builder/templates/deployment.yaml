@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "helm-kv.fullname" . }}
+  name: {{ include "pvc-builder.fullname" . }}
   labels:
-    {{- include "helm-kv.labels" . | nindent 4 }}
+    {{- include "pvc-builder.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "helm-kv.selectorLabels" . | nindent 6 }}
+      {{- include "pvc-builder.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "helm-kv.selectorLabels" . | nindent 8 }}
+        {{- include "pvc-builder.selectorLabels" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "helm-kv.serviceAccountName" . }}
+      serviceAccountName: {{ include "pvc-builder.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
