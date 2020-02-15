@@ -62,7 +62,7 @@ kubevirt:
   memory: 4096M
   cpu: 2
   storage:
-    image: mjschmidt/centos:7-x86_64-genericcloud-1907
+#    image: mjschmidt/centos:7-x86_64-genericcloud-1907
     cloud:
       init: nothing #$(cat ../startup-scripts/fedora-startup-script.sh | base64 -w0) #null 
   
