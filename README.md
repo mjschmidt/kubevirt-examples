@@ -36,9 +36,9 @@ kubectl create configmap -n kubevirt kubevirt-config --from-literal debug.useEmu
 
 ### Create and deploy KubeVirt operator to cluster
 ```
-kubectl create -f resources/kv-0240-operator.yaml
+kubectl create -f resources/v0.24.0/kv-v0.24.0-operator.yaml
 
-kubectl create -f resources/kv-0240-cr.yaml
+kubectl create -f resources/v0.24.0/kv-v0.24.0-cr.yaml
 ```
 
 ### Check status of operator creation
@@ -52,9 +52,9 @@ watch -d kubectl get all -n kubevirt
 
 ### Create and deploy CDI operator to cluster
 ```
-kubectl create -f resources/cdi-1110-operator.yaml
+kubectl create -f resources/v0.24.0/cdi-v1.11.0-operator.yaml
 
-kubectl create -f resources/cdi-1110-cr.yaml
+kubectl create -f resources/v0.24.0/cdi-v1.11.0-cr.yaml
 ```
 <img src="images/CDI_status_image.JPG" width="600" height="300" align="center" />
 
