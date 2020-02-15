@@ -80,6 +80,8 @@ spec:
 ### Create the PVC with Fedora image
 ```
 kubectl create -f pvc_fedora1.yml
+#optional: watch the image download
+kubectl logs -f $(kubectl get all | grep importer | cut -c -28)
 ```
 
 ### Wait for CDI image import to complete
