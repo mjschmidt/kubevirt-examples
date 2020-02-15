@@ -1,4 +1,4 @@
-# Default values for vm-builder.
+# Default values for kubevirt.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -14,7 +14,7 @@ fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  create: false
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name:
@@ -46,6 +46,23 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+kubevirt:
+  namespace: default 
+  name: vm
+  labels:
+    size: small
+    domain: test-vm
+    distro: linux
+    os: linux
+  running: true
+  memory: 4096M
+  cpu: 2
+  storage:
+    image: mjschmidt/centos:7-x86_64-genericcloud-1907
+    cloud:
+      init: nothing #$(cat ../startup-scripts/fedora-startup-script.sh | base64 -w0) #null 
+  
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

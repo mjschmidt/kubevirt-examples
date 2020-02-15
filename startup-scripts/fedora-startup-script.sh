@@ -26,5 +26,4 @@ users:
     lock-passwd: false
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     ssh_authorized_keys:
-      - ssh-rsa
-
+      - ssh-rsa 

@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "pvc-builder.fullname" . }}
+  name: {{ include "kubevirt.fullname" . }}
   labels:
-    {{- include "pvc-builder.labels" . | nindent 4 }}
+    {{- include "kubevirt.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "pvc-builder.selectorLabels" . | nindent 4 }}
+    {{- include "kubevirt.selectorLabels" . | nindent 4 }}

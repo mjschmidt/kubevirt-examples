@@ -1,0 +1,43 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  name: {{ .Values.kubevirt.name }}
+  namespace: {{ .Values.kubevirt.namespace }}
+  generation: 1
+  labels:
+#    kubevirt.io/distro: {{ .Values.kubevirt.labels.distro }}
+    kubevirt.io/os: {{ .Values.kubevirt.labels.os }}
+    kubevirt.io/size: {{ .Values.kubevirt.labels.size }}
+    kubevirt.io/domain: {{ .Values.kubevirt.labels.domain }}
+spec:
+  running: {{ .Values.kubevirt.running }}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        kubevirt.io/domain: {{ .Values.kubevirt.labels.domain }}
+    spec:
+      domain:
+        cpu:
+          cores: {{ .Values.kubevirt.cpu }} 
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: disk0
+          - cdrom:
+              bus: sata
+              readonly: true
+            name: cloudinitdisk
+        machine:
+          type: q35
+        resources:
+          requests:
+            memory: {{ .Values.kubevirt.memory }}
+      volumes:
+      - name: disk0
+        persistentVolumeClaim:
+          claimName: vm #{{ .Values.kubevirt.name }}
+      - name: cloudinitdisk
+        cloudInitNoCloud:
+          userDataBase64: I2Nsb3VkLWNvbmZpZwoKcGFja2FnZV91cGdyYWRlOiB0cnVlCgpwYWNrYWdlczoKICAtIGdpdAoKdXNlcnM6CiAgLSBuYW1lOiBmZWRvcmEKICAgIGdlY29zOiBmZWRvcmEKICAgIHBhc3N3b3JkOiBwYXNzd29yZAogICAgbG9jay1wYXNzd2Q6IGZhbHNlCiAgICBzdWRvOiBbIkFMTD0oQUxMKSBOT1BBU1NXRDpBTEwiXQogICAgc2hlbGw6IC9iaW4vYmFzaAogICAgc3NoX2F1dGhvcml6ZWRfa2V5czoKICAgICAgLSBzc2gtcnNhIAogIC0gbmFtZTogbmFkb3JyCiAgICBnZWNvczogbmFkb3JyCiAgICBsb2NrLXBhc3N3ZDogZmFsc2UKICAgIHN1ZG86IFsiQUxMPShBTEwpIE5PUEFTU1dEOkFMTCJdCiAgICBzaGVsbDogL2Jpbi9iYXNoCiAgICBzc2hfYXV0aG9yaXplZF9rZXlzOgogICAgICAtIHNzaC1yc2EKICAtIG5hbWU6IG1qc2NobWlkdAogICAgZ2Vjb3M6IG1qc2NobWlkdAogICAgbG9jay1wYXNzd2Q6IGZhbHNlCiAgICBzdWRvOiBbIkFMTD0oQUxMKSBOT1BBU1NXRDpBTEwiXQogICAgc3NoX2F1dGhvcml6ZWRfa2V5czoKICAgICAgLSBzc2gtcnNhIEFBQUFCM056YUMxeWMyRUFBQUFCSlFBQUFRRUFyOGNsUE0yYWhLQkxjWnAxc2g3KytVbHJQSC9GQmlERTh0S2J3NG9GbEZrWkFENVFTQXl2SEkrNEpNcUI2RmVmQlA5VG05Njl3cVBqNUk5UkJ0cWNJMWZUUVY2dmVSK0RKN2J3SHJJZ1hycVdZcUxhanVWRnNBZ1VYOTZ4dkw4RjQ2Ym8ra1dCazEvY0kvN3FMVzgvcjV5dCtIUm8yUWhLSVZ5cXhhaXdvaGRJOGFBSFVaVUR1THRzalpsM2w2MjVEajllRkNRRTNkM2lqQzBlR1M4enRQSHFJWTRmOG9tMUJ0eXJheXBDR1RVb2lJSlVHaUpldmc2MEUrbDRYaDFFNG05NXBIZ0NpVEkzUWlmeDA5LzZmbW9JRkxmK2pxN3EvS0h4MS9MbFNpQkM3MFNKbmlOeXdodHlmeDZBTVE3QUJDK1JSTUZ6blg5ZW9ySndDNkxKcFE9PSByc2Eta2V5LTIwMTgxMTA4Cg== 
