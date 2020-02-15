@@ -60,7 +60,7 @@ kubectl create -f prereqs/pvc_fedora_vm.yml
 3) Deploy the helm chart
 
 ```
-helm install your-helm-deployment-name .
+helm install your-helm-deployment-name ./vm-chart/
 ```
 
 ## Helm chart Configuration
@@ -79,3 +79,10 @@ The following table lists the configurable parameters of the Airflow chart and t
 | `kubevirt.memory`                        | Denotes how much memory is allocated to vm              | `4096M`                   |
 | `kubevirt.cpu`                           | Denotes how many cpus are allocated to vm               | `2`                       |
 | `kubevirt.storage.cloud.init`            | Add a base64 encoded cloud init script to your vm       | `nothing`                 |
+
+## Clean up
+When you are finished with the vm & pvc
+```
+helm del your-helm-deployment-name
+kubectl delete -f prereqs/pvc_fedora_vm.yml
+```
