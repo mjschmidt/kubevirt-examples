@@ -12,12 +12,12 @@
 #nameOverride: ""
 #fullnameOverride: ""
 
-serviceAccount:
+#serviceAccount:
   # Specifies whether a service account should be created
-  create: false
+#  create: false
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name:
+#  name:
 
 podSecurityContext: {}
   # fsGroup: 2000
@@ -31,9 +31,9 @@ securityContext: {}
   # runAsUser: 1000
 
 # Not yet included in values file
-#service:
-#  type: ClusterIP
-#  port: 80
+service:
+  type: ClusterIP
+  port: 80
 
 #haven't yet seen if deleting ingress will ruin the chart yet
 #the desire is to remove this section if possible
@@ -56,13 +56,13 @@ kubevirt:
   labels:
     size: small
     domain: test-vm
-    distro: linux
+    distro: fedora 
     os: linux
   running: true
   memory: 4096M
   cpu: 2
   storage:
-#    image: mjschmidt/centos:7-x86_64-genericcloud-1907
+    image: mjschmidt/centos:7-x86_64-genericcloud-1907
     cloud:
       init: nothing #$(cat ../startup-scripts/fedora-startup-script.sh | base64 -w0) #null 
   

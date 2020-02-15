@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.kubevirt.namespace }}
   generation: 1
   labels:
-#    kubevirt.io/distro: {{ .Values.kubevirt.labels.distro }}
+    kubevirt.io/distro: {{ .Values.kubevirt.labels.distro }}
     kubevirt.io/os: {{ .Values.kubevirt.labels.os }}
     kubevirt.io/size: {{ .Values.kubevirt.labels.size }}
     kubevirt.io/domain: {{ .Values.kubevirt.labels.domain }}
