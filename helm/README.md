@@ -22,8 +22,8 @@
 
 ## Current Progress & Steps
 
-- [x] Create Virtual Machine only if PVC is pre provisioned
-- [ ] Increase the flexibility of the VM helm charts
+- [x] **Create Virtual Machine only if PVC is pre provisioned**
+- [ ] **Increase the flexibility of the VM helm charts**
   - [x] Configurable Name
   - [x] Configurable Namespace
   - [x] Configurable static labels
@@ -36,11 +36,11 @@
     - [ ] Set Cloud init via kubernetes secret
   - [ ] Add optional ssh exposed kubernetes service
   - [ ] Add optional vnc exposed kubernetes service
-- [ ] Create an example of rdp enabled VM and contribute it back to KubeVirt
+- [ ] **Create an example of rdp enabled VM and contribute it back to KubeVirt**
   - [ ] Fedora Workstation/Gnome
   - [ ] Cinnamon Desktop
-- [ ] Create a CDI enabled PVC with a seperate helm chart
-- [ ] Increase flexibility of the CDI enabled PVC helm chart
+- [ ] **Create a CDI enabled PVC with a seperate helm chart**
+- [ ] **Increase flexibility of the CDI enabled PVC helm chart**
   - [ ] Make the OS configurable via differnt 
   - [ ] Set if statements that allow people to state desired OS rather than S3:// endpoints for a limited number of preset options
     - [ ] CentOS8 (if it works)
@@ -48,7 +48,7 @@
     - [ ] Ubuntu
     - [ ] RHEL
   - [ ] Enable choice between container image disk or pvc with helm if statement
-- [ ] Create one chart to rule them all that successfully deploys the PVC, then after an appropriate amount of time deploys the VM
+- [ ] **Create one chart to rule them all that successfully deploys the PVC, then after an appropriate amount of time deploys the VM**
 
 ## Usage
 1) Edit and create the nessisary pvc ahead of time from within the pre reqs folder'
