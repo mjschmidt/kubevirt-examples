@@ -10,173 +10,72 @@
 
 # KubeVirt
 
-> _KubeVirt technology addresses the needs of development teams that have adopted or want to adopt Kubernetes but possess existing Virtual Machine-based workloads that cannot be easily containerized. More specifically, the technology provides a unified development platform where developers can build, modify, and deploy applications residing in both Application Containers as well as Virtual Machines in a common, shared environment._ 
+> _The goal of this folder is to create the helm charts nessisary to launch KubeVirt Virtual Machines, the actual launching of the operator is not in scope for what we are trying to accomplish.
 
 ## Project Dependencies
 * Minikube 1.5.2+
 * Kubectl 1.16.2+
 * Docker 19.03.5+
+* KubeVirt v0.24.0+
+* CDI v1.11.0+
 
-## Steps for adding KubeVirt environment
+## Current Progress & Steps
 
-### Install Virtctl
-```
-chmod +x resources/virtctl
-sudo mv resources/virtctl /usr/bin
-```
+- [x] Create Virtual Machine only if PVC is pre provisioned
+- [ ] Increase the flexibility of the VM helm charts
+  - [x] Configurable Name
+  - [x] Configurable Namespace
+  - [x] Configurable static labels
+  - [ ] User added dynamic labels
+  - [x] Set running or dormant state
+  - [x] Configurable memory
+  - [x] Configurable CPU
+  - [ ] Configurable Cloud InIt Script
+    - [ ] Set Cloud init via variables
+    - [ ] Set Cloud init via kubernetes secret
+  - [ ] Add optional ssh exposed kubernetes service
+  - [ ] Add optional vnc exposed kubernetes service
+- [ ] Create an example of rdp enabled VM and contribute it back to KubeVirt
+  - [ ] Fedora Workstation/Gnome
+  - [ ] Cinnamon Desktop
+- [ ] Create a CDI enabled PVC with a seperate helm chart
+- [ ] Increase flexibility of the CDI enabled PVC helm chart
+  - [ ] Make the OS configurable via differnt 
+  - [ ] Set if statements that allow people to state desired OS rather than S3:// endpoints for a limited number of preset options
+    - [ ] CentOS8 (if it works)
+    - [ ] Fedorra 30
+    - [ ] Ubuntu
+    - [ ] RHEL
+  - [ ] Enable choice between container image disk or pvc with helm if statement
+- [ ] Create one chart to rule them all that successfully deploys the PVC, then after an appropriate amount of time deploys the VM
 
-### Create KubeVirt Namespace
-```
-kubectl create ns kubevirt
-```
-
-### Turn on emulation mode
-```
-kubectl create configmap -n kubevirt kubevirt-config --from-literal debug.useEmulation=true
-```
-
-### Create and deploy KubeVirt operator to cluster
-```
-kubectl create -f resources/kv-0240-operator.yaml
-
-kubectl create -f resources/kv-0240-cr.yaml
-```
-
-### Check status of operator creation
-```
-watch -d kubectl get all -n kubevirt
-```
-<img src="images/KV_status_image.JPG" width="600" height="300" align="center" />
-
-
-## Steps for adding CDI environment
-
-### Create and deploy CDI operator to cluster
-```
-kubectl create -f resources/cdi-1110-operator.yaml
-
-kubectl create -f resources/cdi-1110-cr.yaml
-```
-<img src="images/CDI_status_image.JPG" width="600" height="300" align="center" />
-
-## Build image into PVC to test VM creation
-```
-mkdir fedora && cd $_
-vim pvc_fedora1.yml
-```
-
-### PVC details
-```
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: fedora1
-  labels:
-    app: containerized-data-importer
-  annotations:
-    cdi.kubevirt.io/storage.import.endpoint: "https://download.fedoraproject.org/pub/fedora/linux/releases/30/Cloud/x86_64/images/Fedora-Cloud-Base-30-1.2.x86_64.raw.xz"
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-```
-
-### Create the PVC with Fedora image
-```
-kubectl create -f pvc_fedora1.yml
-#optional: watch the image download
-kubectl logs -f $(kubectl get all | grep importer | cut -c -28)
-```
-
-### Wait for CDI image import to complete
-> (K8s pod importer-fedora1-xxxxx will run then complete)
-```
-watch -d kubectl get all
-```
-<img src="images/watchk_1_status.JPG" width="600" height="150" align="center" />
-
-> Check to make sure PVC claim is bound
-```
-kubectl get pvc
-```
-<img src="images/pvc_status.JPG" width="600" height="50" align="center" />
-
-### Create VM and add public key
-
-> Add public key to startup-scripts/fedora-startup-script.sh in project.
+## Usage
+1) Edit and create the nessisary pvc ahead of time from within the pre reqs folder'
 
 ```
-vim vm_fedora1.yml
+kubectl create -f prereqs/pvc_fedora_vm.yml
+```
+2) Wait for the CDI pod to load in the Fedorra OS
+
+3) Deploy the helm chart
+
+```
+helm install your-helm-deployment-name .
 ```
 
-### VM details
-```
-apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachine
-metadata:
-  generation: 1
-  labels:
-    kubevirt.io/os: linux
-  name: fedora1
-spec:
-  running: true
-  template:
-    metadata:
-      creationTimestamp: null
-      labels:
-        kubevirt.io/domain: fedora1
-    spec:
-      domain:
-        cpu:
-          cores: 2
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: disk0
-          - cdrom:
-              bus: sata
-              readonly: true
-            name: cloudinitdisk
-        machine:
-          type: q35
-        resources:
-          requests:
-            memory: 4096M
-      volumes:
-      - name: disk0
-        persistentVolumeClaim:
-          claimName: fedora1
-      - name: cloudinitdisk
-        cloudInitNoCloud:
-          userDataBase64: $(cat ../startup-scripts/fedora-startup-script.sh | base64 -w0) 
-```
+## Helm chart Configuration
 
-> __Note:__ <br>If command in __userDataBase64__ field doesn't produce value, run command outside of yaml and copy/paste into it 
+The following table lists the configurable parameters of the Airflow chart and their default values.
 
-### Apply to cluster and watch for creation
-```
-kubectl create -f vm_fedora1.yml
-watch -d kubectl get all
-virtctl console fedora1
-```
-<img src="images/watchk_2_status.JPG" width="600" height="300" align="center" />
-
-### Create nodeport service for SSH access
-```
-virtctl expose vmi fedora1 --name=fedora1-ssh --port=22 --type=NodePort
-```
-
-### Grab nodeport created and ssh into box
-```
-kubectl get all
-ssh fedora@<host machine ip> -p <service nodeport>
-```
-<img src="images/success.JPG" width="600" height="150" align="center" />
-
-## Acknowledgments :thumbsup:
-
-* [KubeVirt.io](https://kubevirt.io/). Great tutorials and code usage instructions
-
+| Parameter                                | Description                                             | Default                   |
+|------------------------------------------|---------------------------------------------------------|---------------------------|
+| `kubevirt.namespace`                     | Namespace the VM will be deployed to                    | ```default```             |
+| `kubevirt.name`                          | Virtual Machine Name                                    | ```vm```                  |
+| `kubevirt.labels.size`                   | Just a label to give external pulling entifies more info| ```small```               |
+| `kubevirt.labels.domain`                 | Just a label to give external pulling entifies more info| ```test-vm```             |
+| `kubevirt.labels.distro`                 | Just a label to give external pulling entifies more info| ```linux```               |
+| `kubevirt.labels.os`                     | Just a label to give external pulling entifies more info| `linux`                   |
+| `kubevirt.running`                       | Vm deployed in a running state of in a stopped state    | `running`                 |
+| `kubevirt.memory`                        | Denotes how much memory is allocated to vm              | `4096M`                   |
+| `kubevirt.cpu`                           | Denotes how many cpus are allocated to vm               | `2`                       |
+| `kubevirt.storage.cloud.init`            | Add a base64 encoded cloud init script to your vm       | `nothing`                 |
