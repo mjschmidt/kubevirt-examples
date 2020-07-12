@@ -1,0 +1,29 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  namespace: mjschm3
+  name: myvmi
+spec:
+  terminationGracePeriodSeconds: 5
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        disk:
+          bus: virtio
+      - name: cloudinitdisk
+        disk:
+          bus: virtio
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: kubevirt/cirros-container-disk-demo:latest
+    - name: cloudinitdisk
+      cloudInitNoCloud:
+        userData: |
+          ssh-authorized-keys:
+            - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAr8clPM2ahKBLcZp1sh7++UlrPH/FBiDE8tKbw4oFlFkZAD5QSAyvHI+4JMqB6FefBP9Tm969wqPj5I9RBtqcI1fTQV6veR+DJ7bwHrIgXrqWYqLajuVFsAgUX96xvL8F46bo+kWBk1/cI/7qLW8/r5yt+HRo2QhKIVyqxaiwohdI8aAHUZUDuLtsjZl3l625Dj9eFCQE3d3ijC0eGS8ztPHqIY4f8om1BtyraypCGTUoiIJUGiJevg60E+l4Xh1E4m95pHgCiTI3Qifx09/6fmoIFLf+jq7q/KHx1/LlSiBC70SJniNywhtyfx6AMQ7ABC+RRMFznX9eorJwC6LJpQ== rsa-key-20181108 
+
