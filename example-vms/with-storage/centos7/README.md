@@ -36,8 +36,10 @@ Assuming you have alreadyed edited your startup-script.sh, enter the base64 enco
 ```
 cat startup-script.sh | base64 -w0
 ```
-Delete the encircled contents file and replace with your output from the previous command
-<img src="images/replace-userdata.PNG"/>
+
+### Delete the encircled contents file and replace with your output from the previous command
+
+<img src="../../../images/replace-userdata.PNG"/>
 
 ### Launch the Virtual Machine Instnace
 ```kubectl create -f 
