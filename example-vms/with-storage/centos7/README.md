@@ -1,6 +1,6 @@
 # Building Centos VMs on K8s
 
-> Creating a CentOS VM
+> Creating a CentOS VM readme still needs work
 
 ## Quick Start
 
