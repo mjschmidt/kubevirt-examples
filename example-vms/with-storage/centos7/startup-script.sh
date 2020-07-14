@@ -14,9 +14,11 @@ runcmd:
  - [ sh, -c, "yum -y install xrdp tigervnc-server" ]
  - [ sh, -c, "systemctl start xrdp" ]
  - [ sh, -c, "systemctl enable xrdp" ]
+ - [ sh, -c, "systemctl enable firewalld" ]
+ - [ sh, -c, "systemctl start firewalld" ]
  - [ sh, -c, "firewall-cmd --permanent --add-port=3389/tcp" ]
  - [ sh, -c, "firewall-cmd --reload" ]
- - [ sh, -c, "reboot" ]
+ - [ sh, -c, "sudo reboot" ]
 
 #if something goes wrong this is the issue
 write_files:
